@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seguros Patria - Sistema de Gestión</title>
+    <style>
+        :root {
+            --primary: #0284c7;
+            --primary-dark: #0369a1;
+            --danger: #dc2626;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+            --border-color: #cbd5e1;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        .header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        /* Logotipo de Dos Llamas de Fuego (Azul y Rojo) */
+        .flame-logo {
+            display: flex;
+            gap: 3px;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        .flame-blue {
+            width: 14px;
+            height: 28px;
+            background: var(--primary);
+            border-radius: 50% 50% 20% 20%;
+            transform: rotate(-15deg);
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        .flame-red {
+            width: 14px;
+            height: 28px;
+            background: var(--danger);
+            border-radius: 50% 50% 20% 20%;
+            transform: rotate(15deg);
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        h2, h3 {
+            color: var(--primary);
+            margin: 0;
+        }
+        fieldset {
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: #fff;
+        }
+        legend {
+            font-weight: bold;
+            color: var(--primary-dark);
+            padding: 0 10px;
+            font-size: 16px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        .row {
+            display: flex;
+            gap: 12px;
+        }
+        .row .form-group {
+            flex: 1;
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 8px;
+        }
+        .checkbox-group input {
+            width: auto;
+        }
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px;
+            width: 100%;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn:hover {
+            background-color: var(--primary-dark);
+        }
+        .btn-secure {
+            background-color: #059669;
+        }
+        .btn-secure:hover {
+            background-color: #047857;
+        }
+        .btn-print {
+            background-color: #0284c7;
+            margin-top: 15px;
+        }
+        .resultado-box {
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 25px;
+        }
+        .total-price {
+            font-size: 24px;
+            font-weight: bold;
+            color: #0284c7;
+            margin-top: 15px;
+        }
+        /* Carnet Provisional */
+        .carnet-card {
+            background: #ffffff;
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        .carnet-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .carnet-header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .carnet-header h4 {
+            margin: 0;
+            color: var(--primary);
+            font-size: 18px;
+        }
+        .carnet-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            font-size: 13px;
+        }
+        .emergencias-box {
+            background: #f8fafc;
+            border-left: 4px solid var(--primary);
+            padding: 12px;
+            margin-top: 20px;
+            font-size: 13px;
+        }
+        /* Tabla de Coberturas */
+        .coberturas-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+            margin-top: 15px;
+            background: #fff;
+        }
+        .coberturas-table th, .coberturas-table td {
+            border: 1px solid #cbd5e1;
+            padding: 6px;
+            text-align: center;
+        }
+        .coberturas-table th {
+            background-color: #0284c7;
+            color: white;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        .coberturas-table td:first-child {
+            text-align: left;
+            font-weight: 600;
+        }
+
+        /* Configuración de Impresión Limpia */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #seccionEmision, #seccionEmision * {
+                visibility: visible;
+            }
+            #seccionEmision {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                margin: 0;
+                padding: 0;
+                background: white;
+            }
+            .btn-print {
+                display: none;
+            }
+            .flame-blue, .flame-red, .carnet-card, .coberturas-table th {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- CABECERA INSTITUCIONAL CON LOGOTIPO DE LLAMAS -->
+    <div class="header-flex">
+        <div class="logo-container">
+            <div class="flame-logo">
+                <div class="flame-blue"></div>
+                <div class="flame-red"></div>
+            </div>
+            <div>
+                <h2>Seguros Patria</h2>
+                <small style="color: #64748b; font-weight: bold;">Sistema de Gestión (Seguros Patria - Sistema de Gestión)</small><br>
+                <small style="color: #64748b;">Asesoría: Alba Navarro | Tel: +1 (829) 868-4410</small>
+            </div>
+        </div>
+        <div style="text-align: right; background: #e0f2fe; padding: 8px 12px; border-radius: 8px; border: 1px solid #bae6fd;">
+            <span style="font-size: 11px; color: #0369a1; font-weight: bold; display: block;">PATRIA NUM. CLIENTE</span>
+            <span id="numClienteDisplay" style="font-size: 15px; font-weight: bold; color: #0284c7;">---</span>
+        </div>
+    </div>
+    
+    <form id="cotizadorForm">
+
+        <!-- 1. DATOS DE PÓLIZA Y CLIENTE -->
+        <fieldset>
+            <legend>1. Datos del Asegurado y Póliza</legend>
+            <div class="row">
+                <div class="form-group">
+                    <label>Número de Póliza (Sistema Central)</label>
+                    <input type="text" id="numPolizaInput" placeholder="Ej. VEH-1-3132-1069014">
+                </div>
+                <div class="form-group">
+                    <label>Nombre Completo</label>
+                    <input type="text" id="nombre" required placeholder="Ej. Amaury Martinez">
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label>Cédula o Pasaporte</label>
+                    <input type="text" id="cedula" required placeholder="000-0000000-0">
+                </div>
+                <div class="form-group">
+                    <label>Fecha de Nacimiento</label>
+                    <input type="date" id="fechaNacimiento" required>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label>Teléfono</label>
+                    <input type="tel" id="telefono" placeholder="809-000-0000">
+                </div>
+                <div class="form-group">
+                    <label>Correo Electrónico</label>
+                    <input type="email" id="correo" placeholder="correo@ejemplo.com">
+                </div>
+            </div>
+
+            <!-- Dirección Detallada -->
+            <div class="row">
+                <div class="form-group">
+                    <label>Calle y Núm. de Casa</label>
+                    <input type="text" id="calleCasa" placeholder="Ej. Av. 27 de Febrero #45">
+                </div>
+                <div class="form-group">
+                    <label>Sector</label>
+                    <input type="text" id="sector" placeholder="Ej. Naco">
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label>Municipio</label>
+                    <input type="text" id="municipio" placeholder="Ej. Santo Domingo Nacional">
+                </div>
+                <div class="form-group">
+                    <label>Código Postal (Zip Code)</label>
+                    <input type="text" id="zipcode" placeholder="Ej. 10148">
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- 2. DATOS DEL VEHÍCULO -->
+        <fieldset>
+            <legend>2. Datos del Vehículo y Cobertura</legend>
+            <div class="row">
+                <div class="form-group">
+                    <label>Tipo de Vehículo</label>
+                    <select id="tipoVehiculo" onchange="actualizarOpciones()" required>
+                        <option value="">Seleccione...</option>
+                        <option value="motocicleta">Motocicleta (Desde 135cc)</option>
+                        <option value="auto_privado">Automóvil o Station Wagon</option>
+                        <option value="minibus_privado">Minibús, Furgoneta o Miniván</option>
+                        <option value="camioneta">Camioneta</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Plan de Cobertura</label>
+                    <select id="cobertura" required>
+                        <option value="easy">Easy Rider (Motos)</option>
+                        <option value="basico" selected>Básico</option>
+                        <option value="extendido">Extendido</option>
+                        <option value="avanzado">Avanzado</option>
+                        <option value="premium">Premium</option>
+                        <option value="superior">Superior</option>
+                        <option value="elite">Élite</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row" id="grupoCilindros">
+                <div class="form-group">
+                    <label id="labelCapacidad">Cilindros / Capacidad</label>
+                    <select id="cilindrosONotas">
+                        <option value="4">Hasta 4 cilindros</option>
+                        <option value="6">Hasta 6 cilindros</option>
+                        <option value="mas6">Más de 6 cilindros</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label>Marca / Modelo</label>
+                    <input type="text" id="modelo" placeholder="Ej. Toyota Hiace">
+                </div>
+                <div class="form-group">
+                    <label>Año</label>
+                    <input type="number" id="anoVehiculo" placeholder="2026">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label>Número de Placa</label>
+                    <input type="text" id="placa" placeholder="Ej. I123456">
+                </div>
+                <div class="form-group">
+                    <label>Número de Chasis</label>
+                    <input type="text" id="chasis" placeholder="Ej. 8AJBB8F...">
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="form-group">
+                    <label>Servicio</label>
+                    <select id="servicioVehiculo">
+                        <option value="PRIVADO">Privado</option>
+                        <option value="PUBLICO">Público / Uber / Taxi</option>
+                    </select>
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- 3. ASISTENCIAS Y ADICIONALES -->
+        <fieldset>
+            <legend>3. Servicios Adicionales</legend>
+            <div class="form-group">
+                <label>Patria Asistencia</label>
+                <select id="asistencia">
+                    <option value="0">Ninguna</option>
+                    <option value="850">Asistencia Básica (RD$ 850.00)</option>
+                    <option value="1950">Asistencia Plus (RD$ 1,950.00)</option>
+                    <option value="2550">Plus Uber / Taxi (RD$ 2,550.00)</option>
+                    <option value="4550">Plus Vehículos Pesados (RD$ 4,550.00)</option>
+                </select>
+            </div>
+            
+            <div class="checkbox-group">
+                <input type="checkbox" id="casaConductor" value="1650">
+                <label for="casaConductor" style="margin-bottom:0;">Casa del Conductor / CMA (RD$ 1,650.00)</label>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="funerarios" value="90">
+                <label for="funerarios" style="margin-bottom:0;">Gastos Funerarios al Conductor (RD$ 90.00)</label>
+            </div>
+        </fieldset>
+
+        <!-- 4. COTIZACIÓN Y PAGO -->
+        <fieldset>
+            <legend>4. Cotización y Pago</legend>
+            <div class="form-group">
+                <label>Forma de Pago</label>
+                <select id="metodoPago">
+                    <option value="efectivo">Efectivo / Transferencia Bancaria</option>
+                    <option value="tarjeta">Tarjeta de Crédito / Débito</option>
+                </select>
+            </div>
+            <button type="button" class="btn" onclick="calcularCotizacion()">Calcular Cotización</button>
+        </fieldset>
+    </form>
+
+    <!-- RESULTADO DE COTIZACIÓN -->
+    <div id="resultadoCotizacion" class="resultado-box" style="display:none;">
+        <h3>Resumen de Cotización</h3>
+        <p id="resumenCliente"></p>
+        <p id="resumenVehiculoInfo"></p>
+        <hr>
+        <p id="resumenDetalle"></p>
+        <div class="total-price" id="resumenTotal"></div>
+
+        <!-- ACCESO SEGURO PARA EMISIÓN DE PÓLIZA Y CARNET -->
+        <div style="margin-top: 25px; background: #fff; padding: 15px; border-radius: 8px; border: 1px solid #bae6fd;">
+            <h4 style="color: #0369a1; margin-top:0;">🔒 Zona Segura de Emisión</h4>
+            <p style="font-size: 13px; color: #64748b;">Ingrese la clave de seguridad autorizada para emitir la póliza oficial y generar el carnet digital provisional:</p>
+            <div class="row">
+                <div class="form-group" style="margin-bottom:0;">
+                    <input type="password" id="claveSeguridad" placeholder="Clave de Acceso">
+                </div>
+                <div style="flex: 1;">
+                    <button type="button" class="btn btn-secure" onclick="verificarYGenerarCarnet()">Emitir Póliza y Carnet</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECCIÓN DE EMISIÓN OFICIAL Y CARNET (PROTEGIDA) -->
+    <div id="seccionEmision" style="display:none; margin-top: 30px;">
+        <!-- VISTA PREVIA CARNET PROVISIONAL CON LOGOTIPO Y PLAN -->
+        <div class="carnet-card">
+            <div class="carnet-header">
+                <div class="carnet-header-left">
+                    <div class="flame-logo" style="transform: scale(0.7);">
+                        <div class="flame-blue"></div>
+                        <div class="flame-red"></div>
+                    </div>
+                    <h4>PATRIA - CARNET PROVISIONAL DIGITAL</h4>
+                </div>
+                <span id="carPolizaNum" style="font-weight:bold; color:#0369a1;"></span>
+            </div>
+            <div class="carnet-grid">
+                <div><b>CLIENTE:</b> <span id="carCliente"></span></div>
+                <div><b>PLAN:</b> <span id="carPlan" style="color:#0284c7; font-weight:bold;"></span></div>
+                <div><b>SERVICIO:</b> <span id="carServicio"></span></div>
+                <div><b>TIPO:</b> <span id="carTipo"></span></div>
+                <div><b>MARCA/AÑO:</b> <span id="carMarcaAno"></span></div>
+                <div><b>CHASIS:</b> <span id="carChasis"></span></div>
+                <div><b>PLACA:</b> <span id="carPlaca"></span></div>
+                <div><b>VIGENCIA:</b> <span id="carVigencia"></span></div>
+                <div style="grid-column: span 2;"><b>INTERMEDIARIO:</b> ALBA RAFAELA NAVARRO</div>
+            </div>
+        </div>
+
+        <!-- BOTÓN DE IMPRESIÓN DEL CARNET -->
+        <button type="button" class="btn btn-print" onclick="window.print()">🖨️ Imprimir Carnet Provisional</button>
+
+        <!-- TABLA DE COBERTURAS Y BENEFICIOS INTEGRADA -->
+        <h4 style="color: #0369a1; margin-top: 25px;">Tabla de Coberturas y Beneficios Aplicados</h4>
+        <div style="overflow-x: auto;">
+            <table class="coberturas-table">
+                <thead>
+                    <tr>
+                        <th>Coberturas</th>
+                        <th>Easy Rider</th>
+                        <th>Básico</th>
+                        <th>Extendido</th>
+                        <th>Avanzado</th>
+                        <th>Premium</th>
+                        <th>Superior</th>
+                        <th>Élite</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Daños a la propiedad ajena</td>
+                        <td>50,000</td>
+                        <td>100,000</td>
+                        <td>200,000</td>
+                        <td>250,000</td>
+                        <td>300,000</td>
+                        <td>500,000</td>
+                        <td>1,000,000</td>
+                    </tr>
+                    <tr>
+                        <td>Lesiones corporales o muerte a 1 persona</td>
+                        <td>50,000</td>
+                        <td>100,000</td>
+                        <td>200,000</td>
+                        <td>250,000</td>
+                        <td>300,000</td>
+                        <td>500,000</td>
+                        <td>1,000,000</td>
+                    </tr>
+                    <tr>
+                        <td>Lesiones corporales o muerte a más de 1 persona</td>
+                        <td>100,000</td>
+                        <td>200,000</td>
+                        <td>400,000</td>
+                        <td>500,000</td>
+                        <td>600,000</td>
+                        <td>1,000,000</td>
+                        <td>2,000,000</td>
+                    </tr>
+                    <tr>
+                        <td>Fianza judicial</td>
+                        <td>100,000</td>
+                        <td>300,000</td>
+                        <td>500,000</td>
+                        <td>500,000</td>
+                        <td>500,000</td>
+                        <td>1,000,000</td>
+                        <td>1,000,000</td>
+                    </tr>
+                    <tr>
+                        <td>Lesiones corporales o muerte a 1 pasajero*</td>
+                        <td>N/A</td>
+                        <td>100,000</td>
+                        <td>200,000</td>
+                        <td>250,000</td>
+                        <td>300,000</td>
+                        <td>500,000</td>
+                        <td>1,000,000</td>
+                    </tr>
+                    <tr>
+                        <td>Lesiones corporales o muerte a más de 1 pasajero*</td>
+                        <td>N/A</td>
+                        <td>200,000</td>
+                        <td>400,000</td>
+                        <td>500,000</td>
+                        <td>600,000</td>
+                        <td>1,000,000</td>
+                        <td>2,000,000</td>
+                    </tr>
+                    <tr>
+                        <td>Riesgo al conductor*</td>
+                        <td>N/A</td>
+                        <td>15,000</td>
+                        <td>25,000</td>
+                        <td>25,000</td>
+                        <td>25,000</td>
+                        <td>50,000</td>
+                        <td>100,000</td>
+                    </tr>
+                    <tr>
+                        <td>Riesgo peones**</td>
+                        <td>N/A</td>
+                        <td>20,000</td>
+                        <td>30,000</td>
+                        <td>30,000</td>
+                        <td>30,000</td>
+                        <td>50,000</td>
+                        <td>100,000</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- DIRECTORIO DE EMERGENCIAS -->
+        <div class="emergencias-box">
+            <b>📞 Directorio de Emergencias y Asistencias 24/7:</b><br>
+            • Asistencia Vial y Accidentes: <b>809-555-PATRIA</b><br>
+            • Casa del Conductor / CMA: <b>809-555-CASA</b><br>
+            • Departamento Legal: <b>809-555-LEGAL</b>
+        </div>
+    </div>
+</div>
+
+<script>
+// Generar Número de Cliente Único Automático
+const idClienteUnico = 'CLI-' + Math.floor(100000 + Math.random() * 900000);
+document.getElementById("numClienteDisplay").innerText = idClienteUnico;
+
+function actualizarOpciones() {
+    const tipo = document.getElementById("tipoVehiculo").value;
+    const grupoCilindros = document.getElementById("grupoCilindros");
+    const selectCapacidad = document.getElementById("cilindrosONotas");
+    const labelCapacidad = document.getElementById("labelCapacidad");
+
+    if (tipo === "motocicleta") {
+        grupoCilindros.style.display = "none";
+    } else {
+        grupoCilindros.style.display = "flex";
+        if (tipo === "camioneta") {
+            labelCapacidad.innerText = "Capacidad de Carga";
+            selectCapacidad.innerHTML = `
+                <option value="3_4">Hasta 3/4 de tonelada</option>
+                <option value="1">Hasta 1 tonelada</option>
+                <option value="2">Hasta 2 toneladas</option>
+            `;
+        } else {
+            labelCapacidad.innerText = "Cilindros / Capacidad";
+            selectCapacidad.innerHTML = `
+                <option value="4">Hasta 4 cilindros</option>
+                <option value="6">Hasta 6 cilindros</option>
+                <option value="mas6">Más de 6 cilindros</option>
+            `;
+        }
+    }
+}
+
+function calcularCotizacion() {
+    const tipo = document.getElementById("tipoVehiculo").value;
+    const cobertura = document.getElementById("cobertura").value;
+    const parametro = document.getElementById("cilindrosONotas").value;
+    const servicio = document.getElementById("servicioVehiculo").value;
+    
+    if (!tipo) {
+        alert("Por favor seleccione el tipo de vehículo.");
+        return;
+    }
+
+    let primaBase = 0;
+
+    if (tipo === "motocicleta") {
+        if (cobertura === "easy") primaBase = 400;
+        else if (cobertura === "basico") primaBase = 1189;
+        else if (cobertura === "extendido") primaBase = 1508;
+        else {
+            alert("Las motocicletas solo aplican para Easy Rider, Básico o Extendido.");
+            return;
+        }
+    } 
+    // AUTOMÓVIL / STATION WAGON - PRIVADO
+    else if (tipo === "auto_privado" && servicio === "PRIVADO") {
+        if (parametro === "4") {
+            if (cobertura === "basico") primaBase = 1924.44;
+            else if (cobertura === "extendido") primaBase = 2354.80;
+            else if (cobertura === "avanzado") primaBase = 2459.20;
+            else if (cobertura === "premium") primaBase = 2563.60;
+            else if (cobertura === "superior") primaBase = 3665.60;
+            else if (cobertura === "elite") primaBase = 4918.40;
+        } else if (parametro === "6") {
+            if (cobertura === "basico") primaBase = 2454.27;
+            else if (cobertura === "extendido") primaBase = 2939.44;
+            else if (cobertura === "avanzado") primaBase = 3080.38;
+            else if (cobertura === "premium") primaBase = 3221.32;
+            else if (cobertura === "superior") primaBase = 4469.48;
+            else if (cobertura === "elite") primaBase = 6087.68;
+        } else {
+            if (cobertura === "basico") primaBase = 2605.65;
+            else if (cobertura === "extendido") primaBase = 3106.48;
+            else if (cobertura === "avanzado") primaBase = 3257.86;
+            else if (cobertura === "premium") primaBase = 3409.24;
+            else if (cobertura === "superior") primaBase = 4699.16;
+            else if (cobertura === "elite") primaBase = 6421.76;
+        }
+    } 
+    // AUTOMÓVIL / STATION WAGON - PÚBLICO
+    else if (tipo === "auto_privado" && servicio === "PUBLICO") {
+        if (parametro === "4") {
+            if (cobertura === "basico") primaBase = 2705.70;
+            else if (cobertura === "extendido") primaBase = 3230.60;
+            else if (cobertura === "avanzado") primaBase = 3387.20;
+            else if (cobertura === "premium") primaBase = 3543.80;
+            else if (cobertura === "superior") primaBase = 4895.20;
+            else if (cobertura === "elite") primaBase = 6751.20;
+        } else if (parametro === "6") {
+            if (cobertura === "basico") primaBase = 3235.53;
+            else if (cobertura === "extendido") primaBase = 3815.24;
+            else if (cobertura === "avanzado") primaBase = 4008.38;
+            else if (cobertura === "premium") primaBase = 4201.52;
+            else if (cobertura === "superior") primaBase = 5699.08;
+            else if (cobertura === "elite") primaBase = 7920.48;
+        } else {
+            if (cobertura === "basico") primaBase = 3386.91;
+            else if (cobertura === "extendido") primaBase = 3982.28;
+            else if (cobertura === "avanzado") primaBase = 4185.86;
+            else if (cobertura === "premium") primaBase = 4389.44;
+            else if (cobertura === "superior") primaBase = 5928.76;
+            else if (cobertura === "elite") primaBase = 8254.56;
+        }
+    } 
+    // MINIBÚS, FURGONETA O MINIVÁN - PRIVADA
+    else if (tipo === "minibus_privado" && servicio === "PRIVADO") {
+        if (parametro === "4") {
+            if (cobertura === "basico") primaBase = 2429.04;
+            else if (cobertura === "extendido") primaBase = 2911.60;
+            else if (cobertura === "avanzado") primaBase = 3050.80;
+            else if (cobertura === "premium") primaBase = 3190.00;
+            else if (cobertura === "superior") primaBase = 4431.20;
+            else if (cobertura === "elite") primaBase = 6032.00;
+        } else if (parametro === "6") {
+            if (cobertura === "basico") primaBase = 3135.48;
+            else if (cobertura === "extendido") primaBase = 3691.12;
+            else if (cobertura === "avanzado") primaBase = 3879.04;
+            else if (cobertura === "premium") primaBase = 4066.96;
+            else if (cobertura === "superior") primaBase = 5503.04;
+            else if (cobertura === "elite") primaBase = 7591.04;
+        } else {
+            if (cobertura === "basico") primaBase = 3337.32;
+            else if (cobertura === "extendido") primaBase = 3913.84;
+            else if (cobertura === "avanzado") primaBase = 4115.68;
+            else if (cobertura === "premium") primaBase = 4317.52;
+            else if (cobertura === "superior") primaBase = 5809.28;
+            else if (cobertura === "elite") primaBase = 8036.48;
+        }
+    } 
+    // MINIBÚS, FURGONETA O MINIVÁN - PÚBLICA (MATRIZ PERFECTAMENTE ALINEADA)
+    else if (tipo === "minibus_privado" && servicio === "PUBLICO") {
+        if (parametro === "4") {
+            if (cobertura === "basico") primaBase = 3654.00;
+            else if (cobertura === "extendido") primaBase = 4352.90;
+            else if (cobertura === "avanzado") primaBase = 4561.70;
+            else if (cobertura === "premium") primaBase = 4770.50;
+            else if (cobertura === "superior") primaBase = 6522.10;
+            else if (cobertura === "elite") primaBase = 9378.60;
+        } else if (parametro === "6") {
+            if (cobertura === "basico") primaBase = 4360.44;
+            else if (cobertura === "extendido") primaBase = 5132.42;
+            else if (cobertura === "avanzado") primaBase = 5389.94;
+            else if (cobertura === "premium") primaBase = 5647.46;
+            else if (cobertura === "superior") primaBase = 7593.94;
+            else if (cobertura === "elite") primaBase = 10937.64;
+        } else {
+            if (cobertura === "basico") primaBase = 4562.28;
+            else if (cobertura === "extendido") primaBase = 5355.14;
+            else if (cobertura === "avanzado") primaBase = 5626.58;
+            else if (cobertura === "premium") primaBase = 5898.02;
+            else if (cobertura === "superior") primaBase = 7900.18;
+            else if (cobertura === "elite") primaBase = 11383.08;
+        }
+    }
+    // CAMIONETA
+    else if (tipo === "camioneta") {
+        if (parametro === "3_4") {
+            if (cobertura === "basico") primaBase = 2620.44;
+            else if (cobertura === "extendido") primaBase = 3198.70;
+            else if (cobertura === "avanzado") primaBase = 3337.90;
+            else if (cobertura === "premium") primaBase = 3477.10;
+            else if (cobertura === "superior") primaBase = 4909.70;
+            else if (cobertura === "elite") primaBase = 6989.00;
+        } else if (parametro === "1") {
+            if (cobertura === "basico") primaBase = 3125.04;
+            else if (cobertura === "extendido") primaBase = 3755.50;
+            else if (cobertura === "avanzado") primaBase = 3929.50;
+            else if (cobertura === "premium") primaBase = 4199.20;
+            else if (cobertura === "superior") primaBase = 5095.30;
+            else if (cobertura === "elite") primaBase = 8102.60;
+        } else {
+            if (cobertura === "basico") primaBase = 3528.72;
+            else if (cobertura === "extendido") primaBase = 4200.94;
+            else if (cobertura === "avanzado") primaBase = 4402.78;
+            else if (cobertura === "premium") primaBase = 4604.62;
+            else if (cobertura === "superior") primaBase = 6287.78;
+            else if (cobertura === "elite") primaBase = 8993.48;
+        }
+    } else {
+        primaBase = 2500;
+    }
+
+    let costoAsistencia = parseFloat(document.getElementById("asistencia").value);
+    let costoCasaConductor = document.getElementById("casaConductor").checked ? parseFloat(document.getElementById("casaConductor").value) : 0;
+    let costoFunerarios = document.getElementById("funerarios").checked ? parseFloat(document.getElementById("funerarios").value) : 0;
+
+    let subtotal = primaBase + costoAsistencia + costoCasaConductor + costoFunerarios;
+    let metodoPago = document.getElementById("metodoPago").value;
+    let textoPago = metodoPago === "tarjeta" ? "Pago con Tarjeta de Crédito/Débito" : "Pago en Efectivo / Transferencia";
+
+    const nombre = document.getElementById("nombre").value || "Cliente";
+    const cedula = document.getElementById("cedula").value || "N/A";
+    const telefono = document.getElementById("telefono").value || "N/A";
+    const direccion = `${document.getElementById("calleCasa").value}, ${document.getElementById("sector").value}, ${document.getElementById("municipio").value} (CP: ${document.getElementById("zipcode").value})`;
+    
+    const modelo = document.getElementById("modelo").value || "Vehículo";
+    const ano = document.getElementById("anoVehiculo").value || "2026";
+    const placa = document.getElementById("placa").value || "N/A";
+    const chasis = document.getElementById("chasis").value || "N/A";
+
+    document.getElementById("resumenCliente").innerHTML = `<b>Cliente ID:</b> ${idClienteUnico} | <b>Asegurado:</b> ${nombre} | <b>Cédula:</b> ${cedula}<br><b>Dirección:</b> ${direccion} | <b>Tel:</b> ${telefono}`;
+    document.getElementById("resumenVehiculoInfo").innerHTML = `<b>Vehículo:</b> ${modelo} (${ano}) | <b>Placa:</b> ${placa} | <b>Chasis:</b> ${chasis} | <b>Servicio:</b> ${servicio}`;
+    
+    document.getElementById("resumenDetalle").innerHTML = `
+        Prima Base Póliza (Valor Fijo de Tabla): RD$ ${primaBase.toFixed(2)}<br>
+        ${costoAsistencia > 0 ? 'Asistencia Vial: RD$ ' + costoAsistencia.toFixed(2) + '<br>' : ''}
+        ${costoCasaConductor > 0 ? 'Casa del Conductor: RD$ 1,650.00<br>' : ''}
+        ${costoFunerarios > 0 ? 'Gastos Funerarios: RD$ 90.00<br>' : ''}
+        <br><b>Método de Pago:</b> ${textoPago}
+    `;
+    document.getElementById("resumenTotal").innerText = `Total a Pagar: RD$ ${subtotal.toFixed(2)}`;
+
+    document.getElementById("resultadoCotizacion").style.display = "block";
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+}
+
+function verificarYGenerarCarnet() {
+    const clave = document.getElementById("claveSeguridad").value;
+    
+    if (clave !== "Alba2026") {
+        alert("Clave de seguridad incorrecta. Solo personal autorizado puede emitir pólizas.");
+        return;
+    }
+
+    const tipoSelect = document.getElementById("tipoVehiculo");
+    const tipoTexto = tipoSelect.options[tipoSelect.selectedIndex].text;
+    
+    const coberturaSelect = document.getElementById("cobertura");
+    const planTexto = coberturaSelect.options[coberturaSelect.selectedIndex].text;
+    
+    const servicio = document.getElementById("servicioVehiculo").value;
+    const modelo = document.getElementById("modelo").value || "Vehículo";
+    const ano = document.getElementById("anoVehiculo").value || "2026";
+    const placa = document.getElementById("placa").value || "N/A";
+    const chasis = document.getElementById("chasis").value || "N/A";
+    const nombre = document.getElementById("nombre").value || "Cliente";
+    const numPoliza = document.getElementById("numPolizaInput").value || "VEH-PENDIENTE";
+
+    // Fechas formateadas estrictamente en ESPAÑOL
+    const meses = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+    
+    const hoy = new Date();
+    const diaExp = hoy.getDate();
+    const mesExp = meses[hoy.getMonth()];
+    const anioExp = hoy.getFullYear();
+    const fechaExpFormateada = `${diaExp} de ${mesExp} de ${anioExp}`;
+
+    const fechaVenObj = new Date();
+    fechaVenObj.setFullYear(fechaVenObj.getFullYear() + 1);
+    const diaVen = fechaVenObj.getDate();
+    const mesVen = meses[fechaVenObj.getMonth()];
+    const anioVen = fechaVenObj.getFullYear();
+    const fechaVenFormateada = `${diaVen} de ${mesVen} de ${anioVen}`;
+
+    document.getElementById("carPolizaNum").innerText = numPoliza;
+    document.getElementById("carCliente").innerText = nombre.toUpperCase();
+    document.getElementById("carPlan").innerText = planTexto.toUpperCase();
+    document.getElementById("carServicio").innerText = servicio;
+    document.getElementById("carTipo").innerText = tipoTexto.toUpperCase();
+    document.getElementById("carMarcaAno").innerText = `${modelo} (${ano})`;
+    document.getElementById("carChasis").innerText = chasis;
+    document.getElementById("carPlaca").innerText = placa;
+    document.getElementById("carVigencia").innerText = `${fechaExpFormateada} al ${fechaVenFormateada}`;
+
+    document.getElementById("seccionEmision").style.display = "block";
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>
