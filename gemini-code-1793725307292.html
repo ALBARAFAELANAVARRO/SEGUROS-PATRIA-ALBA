@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seguros Patria - Sistema de Gestión</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         :root {
             --primary: #0284c7;
@@ -872,7 +873,26 @@ function verificarYGenerarCarnet() {
     document.getElementById("seccionEmision").style.display = "block";
     window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
 }
-</script>
+    // Conexión oficial a Seguros Patria - Supabase
+  const SUPABASE_URL = 'https://wgtcmglnqwfchhzntenn.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_WC4cCfP5BW2-yebG_bPjPg_gX6vGqso';
+  
+  const { createClient } = supabase;
+  const _supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  // Función para guardar una póliza nueva en la nube
+  async function guardarPolizaEnSupabase(datosPoliza) {
+    const { data, error } = await _supabase
+      .from('POLIZAS')
+      .insert([datosPoliza]);
+    
+    if (error) {
+      console.error('Error al guardar en Supabase:', error);
+    } else {
+      console.log('¡Guardado exitoso en Supabase!', data);
+    }
+  }
+  </script> 
 
 </body>
 </html>
