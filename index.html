@@ -878,7 +878,10 @@ function verificarYGenerarCarnet() {
         num_poliza: numPoliza,
         nombre_cliente: nombre,
         cedula: document.getElementById("cedula").value || "N/A",
-        fecha_nacimiento: document.getElementById("fechaNacimiento")?.value || null // <--- ¡Aquí capturamos el cumpleaños!
+        fecha_nacimiento: document.getElementById("fechaNacimiento")?.value || null
+    };
+    guardarPolizaEnSupabase(datosPoliza);
+    // -------------------------------------
     };
     guardarPolizaEnSupabase(datosPoliza);
     // -------------------------------------
