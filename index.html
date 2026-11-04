@@ -873,6 +873,15 @@ function verificarYGenerarCarnet() {
     document.getElementById("seccionEmision").style.display = "block";
     window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
 }
+    // --- NUEVO: Enviar datos a Supabase ---
+    const datosPoliza = {
+        num_poliza: numPoliza,
+        nombre_cliente: nombre,
+        cedula: document.getElementById("cedula").value || "N/A",
+        fecha_nacimiento: document.getElementById("fechaNacimiento")?.value || null // <--- ¡Aquí capturamos el cumpleaños!
+    };
+    guardarPolizaEnSupabase(datosPoliza);
+    // -------------------------------------
     // Conexión oficial a Seguros Patria - Supabase
   const SUPABASE_URL = 'https://wgtcmglnqwfchhzntenn.supabase.co';
   const SUPABASE_ANON_KEY = 'sb_publishable_WC4cCfP5BW2-yebG_bPjPg_gX6vGqso';
