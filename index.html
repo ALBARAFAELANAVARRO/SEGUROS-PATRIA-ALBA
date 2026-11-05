@@ -869,11 +869,10 @@ function verificarYGenerarCarnet() {
     document.getElementById("carChasis").innerText = chasis;
     document.getElementById("carPlaca").innerText = placa;
     document.getElementById("carVigencia").innerText = `${fechaExpFormateada} al ${fechaVenFormateada}`;
-
     document.getElementById("seccionEmision").style.display = "block";
     window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-}
-    // --- NUEVO: Enviar datos a Supabase ---
+
+    // --- Enviar datos a Supabase ---
     const datosPoliza = {
         num_poliza: numPoliza,
         nombre_cliente: nombre,
@@ -881,7 +880,8 @@ function verificarYGenerarCarnet() {
         fecha_nacimiento: document.getElementById("fechaNacimiento")?.value || null
     };
     guardarPolizaEnSupabase(datosPoliza);
-    // -------------------------------------
+}
+
 // Conexión oficial a Seguros Patria - Supabase
 const SUPABASE_URL = 'https://wgtcmglnqwfchhzntenn.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_WC4cCfP5BW2-yebG_bPjPg_gX6vGqso';
@@ -900,6 +900,7 @@ async function guardarPolizaEnSupabase(datosPoliza) {
         console.log('¡Guardado exitoso en Supabase!', data);
     }
 }
+</script>
   </script> 
 
 </body>
