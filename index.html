@@ -900,24 +900,6 @@ async function guardarPolizaEnSupabase(datosPoliza) {
         console.log('¡Guardado exitoso en Supabase!', data);
     }
 }
-// Conexión oficial a Seguros Patria - Supabase
-const SUPABASE_URL = 'https://wgtcmglnqwfchhzntenn.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_WC4cCfP5BW2-yebG_bPjPg_gX6vGqso';
-const { createClient } = supabase;
-const _supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-// Función para guardar una póliza nueva en la nube
-async function guardarPolizaEnSupabase(datosPoliza) {
-    const { data, error } = await _supabase
-        .from('POLIZAS')
-        .insert([datosPoliza]);
-    
-    if (error) {
-        console.error('Error al guardar en Supabase:', error);
-    } else {
-        console.log('¡Guardado exitoso en Supabase!', data);
-    }
-}
 </script>
 </body>
 </html>
