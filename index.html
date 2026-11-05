@@ -872,9 +872,9 @@ function verificarYGenerarCarnet() {
     document.getElementById("seccionEmision").style.display = "block";
     window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
 
-    // --- Enviar datos a Supabase ---
+   // --- Enviar datos a Supabase de forma segura ---
     const datosPoliza = {
-        num_poliza: numPoliza,
+        num_poliza: document.getElementById("numPoliza")?.value || document.getElementById("numPolizaSpan")?.innerText || "VEH-8-966666",
         nombre_cliente: nombre,
         cedula: document.getElementById("cedula").value || "N/A",
         fecha_nacimiento: document.getElementById("fechaNacimiento")?.value || null
@@ -882,6 +882,25 @@ function verificarYGenerarCarnet() {
     guardarPolizaEnSupabase(datosPoliza);
 }
 
+// Conexión oficial a Seguros Patria - Supabase
+const SUPABASE_URL = 'https://wgtcmglnqwfchhzntenn.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_WC4cCfP5BW2-yebG_bPjPg_gX6vGqso';
+const { createClient } = supabase;
+const _supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// Función para guardar una póliza nueva en la nube
+async function guardarPolizaEnSupabase(datosPoliza) {
+    const { data, error } = await _supabase
+        .from('POLIZAS')
+        .insert([datosPoliza]);
+    
+    if (error) {
+        console.error('Error al guardar en Supabase:', error);
+    } else {
+        console.log('¡Guardado exitoso en Supabase!', data);
+    }
+}
+</script>
 // Conexión oficial a Seguros Patria - Supabase
 const SUPABASE_URL = 'https://wgtcmglnqwfchhzntenn.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_WC4cCfP5BW2-yebG_bPjPg_gX6vGqso';
