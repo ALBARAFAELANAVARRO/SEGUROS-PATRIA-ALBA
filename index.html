@@ -50,24 +50,39 @@
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
         }
-        .flame-blue {
-            width: 14px;
-            height: 28px;
-            background: var(--primary);
-            border-radius: 50% 50% 20% 20%;
-            transform: rotate(-15deg);
-            -webkit-print-color-adjust: exact;
-            print-color-adjust: exact;
-        }
-        .flame-red {
-            width: 14px;
-            height: 28px;
-            background: var(--danger);
-            border-radius: 50% 50% 20% 20%;
-            transform: rotate(15deg);
-            -webkit-print-color-adjust: exact;
-            print-color-adjust: exact;
-        }
+        /* LOGO PATRIA MEJORADO - Igualito a la tarjeta */
+.flame-logo {
+    display: flex;
+    align-items: flex-end;
+    gap: 0;
+    width: 52px;
+    height: 52px;
+    position: relative;
+    flex-shrink: 0;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+.flame-blue {
+    width: 28px;
+    height: 48px;
+    background: #1E344D;
+    /* Forma de gota / coma azul */
+    border-radius: 50% 0 50% 50%;
+    transform: rotate(28deg) translateX(6px);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+.flame-red {
+    width: 28px;
+    height: 48px;
+    background: #E85A4F;
+    /* Forma de gota / coma roja */
+    border-radius: 50% 50% 50% 0;
+    transform: rotate(-28deg) translateX(-6px);
+    margin-left: -8px;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
         h2, h3 {
             color: var(--primary);
             margin: 0;
