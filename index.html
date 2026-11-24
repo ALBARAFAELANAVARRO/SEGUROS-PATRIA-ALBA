@@ -883,10 +883,11 @@ function verificarYGenerarCarnet() {
     document.getElementById("seccionEmision").style.display = "block";
     window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
 
-   // --- Enviar datos a Supabase de forma segura ---
+       // --- Enviar datos a Supabase de forma segura ---
     const datosPoliza = {
-        num_poliza: document.getElementById("numPoliza")?.value || document.getElementById("numPolizaSpan")?.innerText || "VEH-8-966666",
-    nombre_cliente: document.getElementById("nombre")?.value || "N/A",        cedula: document.getElementById("cedula").value || "N/A",
+        num_poliza: document.getElementById("numPolizaInput")?.value || "VEH-" + Date.now(),
+        nombre_cliente: document.getElementById("nombre")?.value || "N/A",
+        cedula: document.getElementById("cedula")?.value || "N/A",
         fecha_nacimiento: document.getElementById("fechaNacimiento")?.value || null
     };
     guardarPolizaEnSupabase(datosPoliza);
