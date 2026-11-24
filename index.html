@@ -886,7 +886,7 @@ function verificarYGenerarCarnet() {
    // --- Enviar datos a Supabase de forma segura ---
     const datosPoliza = {
         num_poliza: document.getElementById("numPoliza")?.value || document.getElementById("numPolizaSpan")?.innerText || "VEH-8-966666",
-    nombre_cliente: document.getElementById("nombre").value || "N/A",        cedula: document.getElementById("cedula").value || "N/A",
+    nombre_cliente: document.getElementById("nombre")?.value || "N/A",        cedula: document.getElementById("cedula").value || "N/A",
         fecha_nacimiento: document.getElementById("fechaNacimiento")?.value || null
     };
     guardarPolizaEnSupabase(datosPoliza);
