@@ -807,7 +807,7 @@ function calcularCotizacion() {
     let metodoPago = document.getElementById("metodoPago").value;
     let textoPago = metodoPago === "tarjeta" ? "Pago con Tarjeta de Crédito/Débito" : "Pago en Efectivo / Transferencia";
 
-    const nombre = document.getElementById("nombreCompleto").value ||;
+    const nombre = document.getElementById("nombreCompleto").value || "N/A";
     const cedula = document.getElementById("cedula").value || "N/A";
     const telefono = document.getElementById("telefono").value || "N/A";
     const direccion = `${document.getElementById("calleCasa").value}, ${document.getElementById("sector").value}, ${document.getElementById("municipio").value} (CP: ${document.getElementById("zipcode").value})`;
